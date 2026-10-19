@@ -20,6 +20,7 @@ Layered Martian map for the 2026 NASA Space Apps Challenge,
 - Leg 2: 8.9 km, max slope 15.0 deg
 - Data downsampled to 20 m/pixel
 
+![Route map](jezero_route_real.png)
 ## Data
 - Mars Trek (trek.nasa.gov/mars): "MRO HiRISE, Jezero DEM, Controlled"
 - Science targets: Mars Trek "Jezero Crater Features and Landforms" tour
@@ -36,7 +37,7 @@ Python, NumPy, Rasterio, scikit-image, Matplotlib, Folium
 ## Limitations
 - Slope thresholds (15 and 25 deg) and walking speed (3 km/h) are assumptions
 - Planning-level estimate: 20 m/pixel smooths out local steep spots
-- Northern Delta and Outflow Channel are outside the DEM study area, so they are excluded
+- Outflow Channel are outside the DEM study area, so they are excluded
 - Map uses image coordinates, not real lat/long
 
 ## Future work
