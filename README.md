@@ -5,6 +5,8 @@ A layered Martian map for the 2026 NASA Space Apps Challenge,
 
 **Author:** Nishanthini M
 
+**Live map:** https://25243060-creator.github.io/martian-map-route-planner/jezero_map.html
+
 ![Route map](jezero_route_real.png)
 
 ## Problem
@@ -39,7 +41,7 @@ Both legs stay within the 15 deg risk threshold along the path.
 
 ## Files
 - `marspath_notebook.ipynb`: full code (Google Colab)
-- `jezero_map.html`: interactive layered map (download and open in a browser)
+- `jezero_map.html`: interactive layered map (also live at the link above)
 - `jezero_route_real.png`: route, science stops and return radius
 
 ## Map layers
