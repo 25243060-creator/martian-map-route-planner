@@ -47,4 +47,27 @@ Slope (hazard), Elevation, Safe route, Habitat and end point,
 Science stops (with distance, elevation and slope), 5 km return radius.
 
 ## Data
-- Mars Trek (trek.nasa.gov/mars): "MRO HiRISE, Jezero
+- Mars Trek (trek.nasa.gov/mars): "MRO HiRISE, Jezero DEM, Controlled"
+- Science targets: Mars Trek "Jezero Crater Features and Landforms" tour
+- The DEM file is about 1.8 GB and is not included. Download it from Mars Trek.
+
+## How to run
+1. Download the DEM from Mars Trek and upload it to Google Drive as `jezero_dem.tif`
+2. Open `marspath_notebook.ipynb` in Google Colab
+3. Run `!pip install rasterio folium`, then run the cells in order
+
+## Tech
+Python, NumPy, Rasterio, pyproj, scikit-image, Matplotlib, Folium
+
+## Limitations
+- Slope thresholds (15 and 25 deg) and walking speed (3 km/h) are assumptions
+- Planning-level estimate: 20 m/pixel smooths out local steep spots
+- Outflow Channel is outside the DEM study area, so it is excluded
+- Northern Delta Deposit is not included (coordinates not verified)
+- The Western Inflow Channel stop was snapped about 0.5 km to the nearest valid DEM pixel
+- The map uses image coordinates, not real lat/long
+
+## Future work
+- Weather (MEDA/REMS), radiation and dust layers
+- A larger DEM area to include more science targets
+- 3D view of the route
