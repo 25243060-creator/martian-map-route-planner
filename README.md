@@ -1,75 +1,52 @@
-# MarsPath: Safe Route and Science Planner
+# MarsPath: A Layered Safe-Route Map for a Jezero Crater Marswalk
 
-A layered Martian map for the 2026 NASA Space Apps Challenge,
-**"Interplanetary Survival Guide: Martian Map"**.
+NASA Space Apps Challenge 2026, **Interplanetary Survival Guide: Martian Map**
+Team **NOVANEC**: Nishanthini M (Team Leader), Sailaja M, Suji R, Tanisha Rayyan S
 
-**Author:** Nishanthini M
+## What it is
+MarsPath is an interactive, layered map of Jezero Crater that helps plan a safe human surface excursion. It combines three kinds of NASA and USGS data and plans a route from the habitat (Perseverance landing site) to science stops within an emergency return radius.
 
-**Live map:** https://25243060-creator.github.io/martian-map-route-planner/jezero_map.html
+**Live map:** https://25243060-creator.github.io/martian-map-route-planner/jezero_map_final.html
+**Map file:** `jezero_map_final.html` (open in a browser)
 
-![Route map](jezero_route_real.png)
+## Layers
+- Optical image (CTX orthoimage)
+- Geologic units (USGS)
+- Slope, elevation and hillshade (derived from the HiRISE DTM)
+- Caution zone (slope 15 to 25 degrees) and no-go zone (above 25 degrees)
+- On-foot route, rover-supported route, 8 km return radius, science stops
+- Crew safety panel
 
-## Problem
-The first astronauts on Mars will need more than a flat image: they need to know
-which route is safe, where the steep slopes are, which places are worth studying,
-and how far they are from shelter. This project combines NASA Mars data into one
-layered view of Jezero Crater to plan a Marswalk.
+## Results
+- Habitat to Western Delta (on foot): 7.4 km, about 2.5 hours at 3 km/h, maximum slope 15 degrees
+- Western Delta to Western Inflow Channel (rover-supported): 10.2 km
+- 6.7% of the mapped area is caution terrain and 0.6% is no-go terrain
 
-## What it does
-- Calculates a slope hazard map of Jezero Crater from a HiRISE DTM
-- Builds a hazard cost map (slope > 15 deg = risky, > 25 deg = no-go)
-- Finds the safest walking route with A* (scikit-image)
-- Routes through real science targets from the Mars Trek Jezero tour
-- Shows a 5 km emergency return radius
-- Exports an interactive layered map with toggleable layers
+## Data used
+- Mars 2020 Terrain Relative Navigation HiRISE DTM Mosaic (USGS)
+- Mars 2020 Terrain Relative Navigation CTX Orthorectified Image Mosaic (USGS)
+- Geologic Map of Jezero Crater and the Nili Planum Region, USGS SIM 3464 (Sun and Stack, 2020)
+- Curiosity RAD measurements at Gale Crater (reference value for radiation)
 
-## Result
-- Route: Landing Site (habitat) -> Western Delta Deposit -> Western Inflow Channel
-- Total distance: 14.8 km, about 4.9 hours at 3 km/h
+## How it works
+1. Load the DTM and downsample it to a 20 m grid
+2. Compute slope and build a cost map (slope above 15 degrees costs more, above 25 degrees is blocked)
+3. Plan routes with the A* algorithm
+4. Align the optical image and the geologic polygons to the DTM grid
+5. Build the interactive Folium map with layer toggles and a safety panel
 
-| Leg | Distance | Time | Max slope | Mean slope |
-|---|---|---|---|---|
-| Habitat -> Western Delta Deposit | 5.9 km | 2.0 hrs | 14.7 deg | 4.8 deg |
-| Western Delta -> Western Inflow Channel | 8.9 km | 3.0 hrs | 15.0 deg | 8.0 deg |
-
-| Science stop | Elevation | Slope at stop |
-|---|---|---|
-| Western Delta Deposit | -2428 m | 9.3 deg |
-| Western Inflow Channel | -2291 m | 7.2 deg |
-
-Both legs stay within the 15 deg risk threshold along the path.
+## Assumptions and limitations
+- The slope limits (15 and 25 degrees), walking speed (3 km/h) and 8 km return radius are our assumptions
+- The geologic map was made on a different CTX base, so alignment with the optical layer is approximate
+- The Western Inflow Channel position is approximate
+- The radiation value is a reference from Curiosity, not measured at Jezero
+- No thermal or spectral layer yet
 
 ## Files
-- `marspath_notebook.ipynb`: full code (Google Colab)
-- `jezero_map.html`: interactive layered map (also live at the link above)
-- `jezero_route_real.png`: route, science stops and return radius
+- `jezero_map_final.html`: final interactive map
+- `marspath_notebook.ipynb`: Google Colab notebook
+- `jezero_route_real.png`: route preview on the slope map
+- `jezero_map.html`: earlier version of the map
 
-## Map layers
-Slope (hazard), Elevation, Safe route, Habitat and end point,
-Science stops (with distance, elevation and slope), 5 km return radius.
-
-## Data
-- Mars Trek (trek.nasa.gov/mars): "MRO HiRISE, Jezero DEM, Controlled"
-- Science targets: Mars Trek "Jezero Crater Features and Landforms" tour
-- The DEM file is about 1.8 GB and is not included. Download it from Mars Trek.
-
-## How to run
-1. Download the DEM from Mars Trek and upload it to Google Drive as `jezero_dem.tif`
-2. Open `marspath_notebook.ipynb` in Google Colab
-3. Run `!pip install rasterio folium`, then run the cells in order
-
-## Tech
-Python, NumPy, Rasterio, pyproj, scikit-image, Matplotlib, Folium
-
-## Limitations
-- Slope thresholds (15 and 25 deg) and walking speed (3 km/h) are assumptions
-- Planning-level estimate: 20 m/pixel smooths out local steep spots
-- Outflow Channel is outside the DEM study area, so it is excluded
-- Northern Delta Deposit is not included (coordinates not verified)
-- The Western Inflow Channel stop was snapped about 0.5 km to the nearest valid DEM pixel
-- The map uses image coordinates, not real lat/long
-
-## Future work
-- Weather (MEDA/REMS), radiation and dust layers
-- A larger DEM area to include more science targets
-- 3D view of the route
+## Tools
+Python, Google Colab, rasterio, GeoPandas, scikit-image, Folium
